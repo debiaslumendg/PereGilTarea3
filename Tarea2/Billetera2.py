@@ -41,31 +41,11 @@ class BilleteraElectronica(object):
             return self.saldo_actual
         
         def recargar(self,monto,fecha,ID_Lugar): 
-            monto = Decimal(monto)
-            self.transacciones.append(Transaccion(monto, fecha, ID_Lugar, 1))
-            self.saldo_actual += monto
-            
-        def consumir(self,monto,fecha,ID_Lugar,PIN):
-            
-            PIN_prueba, salt = self.PIN.split(':')
-            if PIN_prueba != hashlib.sha256(salt.encode() + PIN.encode()).hexdigest():
-                return "Su PIN no coincide con el introducido"
-            if self.saldo_actual < monto:
-                return "No tiene suficiente saldo"
-            
-            monto = Decimal(monto)
-            self.transacciones.append(Transaccion(monto, fecha, ID_Lugar, 0))
-            self.saldo_actual -= monto
-            
-        
-            
-            
-
-            
-a = BilleteraElectronica(1,Usuario("pedrño","pérez",23712077), "123456")
-
-a.recargar(2, datetime(year=1,month=1,day=1), "1")
-a.recargar(10, datetime(year=1,month=1,day=1), "1")
-print(a.consumir(13, datetime(year=1,month=1,day=1), "2", "123456"))
-print(a.saldo())
-
+            if monto <= 0:
+                raise Exception
+            try:
+                monto = Decimal(monto);
+            except:
+                raise Exception
+                                
+            self.saldo_actual += monto;
