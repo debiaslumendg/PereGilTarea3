@@ -12,8 +12,8 @@ from decimal import Decimal
 import hashlib
 import uuid
 import unittest
-from Billetera2 import * 
-import Billetera2
+from Billetera import * 
+import Billetera
 
 
 class Test(unittest.TestCase):
@@ -24,7 +24,7 @@ class Test(unittest.TestCase):
         a = BilleteraElectronica(1,Usuario("pedro","perez",23712077), "123456")      
         self.assertEqual(a.saldo(),a.saldo_actual)
     
-    def testRecargaNormalDesdeCero(self):
+    def testRecargaDesdeCero(self):
         a = BilleteraElectronica(1,Usuario("pedro","perez",23712077), "123456")
         a.recargar(1, datetime(year =1, month =1, day =1), 1)
         self.assertEqual(a.saldo(), 1)
@@ -55,6 +55,37 @@ class Test(unittest.TestCase):
         a.recargar(1, None, None)
         a.recargar((2**31)-1, None, None)
         self.assertEqual(a.saldo(), 2**31)
+        
+    
+    #Lista de pendientes:
+    
+    def testConsumoVacio(self):
+        pass
+    
+    #EN ESTE UNIVERSO SE PUEDE CONSUMIR 0    
+    def testConsumir0(self):
+        a = BilleteraElectronica(1,Usuario("pedro","perez",23712077), "123456")
+        a.recargar(1, None, None)
+        a.consumir(0, None, None,"123456")
+        self.assertEqual(a.saldo(), 1)
+        
+    def testConsumoNegativo(self):
+        pass
+    
+    def testConsumoRegular(self):
+        pass
+    
+    def testConsumoPINErroneo(self):
+        pass
+    
+    def testConsumoSaldoInsuficiente(self):
+        pass
+    
+    def testConsumoCantidadMuyAlta(self):
+        pass
+    
+    
+        
         
     
         
