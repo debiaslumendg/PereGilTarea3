@@ -193,6 +193,20 @@ class TestBilleteraExists(unittest.TestCase):
         self.assertEqual(a.debitos[-1].fecha, fecha)
         self.assertEqual(a.debitos[-1].ID_Lugar, 2)
         self.assertEqual(len(a.debitos), 2)
+        
+    def testTodoMalo(self):
+        self.assertRaises(VoidException, BilleteraElectronica,None,"","",None,"")
+        a = BilleteraElectronica(1, "Virginia", "Gil", 23712077, "123456")
+        self.assertRaises(Exception,a.recargar,0, None, None)
+        self.assertRaises(Exception,a.consumir,-1,None,None, None)
+        
+    def testConsumoSaldoInsuficienteMargenMuyMinimo(self):
+        a = BilleteraElectronica(1, "Virginia", "Gil", 23712077, "123456")
+        fecha = datetime(year = 1, month = 1, day = 1)
+        a.recargar(1, fecha, 1)
+        self.assertRaises(NoFundsException, a.consumir, 1.000000000000001, fecha, 1, "123456")
+
+    
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
